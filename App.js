@@ -11,29 +11,30 @@ import HomeScreen from './src/screens/HomeScreen';
 import LoginScreen from './src/screens/LoginScreen'
 import FavoritesScreen from './src/screens/FavoritesScreen'
 console.disableYellowBox = true
-
-
-
-
+import { updateFocus, getCurrentRouteKey } from 'react-navigation-is-focused-hoc'
 
 const BottomTab = createBottomTabNavigator(
   {
-    Home: {
+    HomeScreen: {
       screen: HomeScreen
     },
   
-    Favorites : {
+    FavoritesScreen : {
       screen : FavoritesScreen
     },
-    Login :{
+    LoginScreen :{
       screen : LoginScreen
     },   
+  }, { 
+    swipeEnabled : true,
+    headerMode : 'none',
+    initialRouteName:'LoginScreen'
   }
 );
 
 const Root = createStackNavigator(
   {
-    Login: 
+    LoginScreen: 
     {
       screen: LoginScreen
     },
@@ -43,7 +44,8 @@ const Root = createStackNavigator(
   },
     { 
       swipeEnabled : true,
-      headerMode : 'none'
+      headerMode : 'none',
+      initialRouteName:'LoginScreen'
     }
 
 )
@@ -51,7 +53,10 @@ const Root = createStackNavigator(
 export default class App extends Component {
   render() {
     return (
-      <Root/>
+      <Root 
+      onNavigationStateChange={(prevState, currentState) => {
+        updateFocus(currentState)
+      }}/>
     );
   }
 }
